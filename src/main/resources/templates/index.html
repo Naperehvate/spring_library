@@ -28,7 +28,7 @@
             <td th:text="${book.getTitle()}">Title</td>
             <td th:text="${book.getAuthor()}">Author</td>
             <td>
-                <a th:href="@{/api/books/update/{id}(id=${book.getId()})}" class="btn btn-outline-warning btn-sm me-3">Изменить</a>
+                <a th:href="@{/api/books/edit/{id}(id=${book.getId()})}" class="btn btn-outline-warning btn-sm me-3">Изменить</a>
                 <a th:href="@{/api/books/delete/{id}(id=${book.getId()})}" class="btn btn-outline-danger btn-sm">Удалить</a>
             </td>
         </tr>

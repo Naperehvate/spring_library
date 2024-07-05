@@ -1,10 +1,11 @@
 package org.example.spring_library;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping("/api/books")
 public class BookController {
     @Autowired
@@ -12,7 +13,7 @@ public class BookController {
 
     @GetMapping
     public String getAllBooks(Model model) {
-        model.addAttribute("index", bookRepository.findAll());
+        model.addAttribute("books", bookRepository.findAll());
         return "index";
     }
 
@@ -23,9 +24,10 @@ public class BookController {
     }
 
     @PostMapping
-    public String createBook(@RequestBody Book book) {
+    public String createBook(Book book) {
+        System.out.println(book);
         bookRepository.save(book);
-        return "redirect:/index";
+        return "redirect:/api/books";
     }
 
     @GetMapping("/edit/{id}")
@@ -35,19 +37,19 @@ public class BookController {
         return "edit-book";
     }
 
-    @PutMapping("/update/{id}")
-    public String updateBook(@PathVariable Long id, @RequestBody Book updatedBook) {
+    @PostMapping("/update/{id}")
+    public String updateBook(@PathVariable Long id, Book updatedBook) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid book id: " + id));
         book.setTitle(updatedBook.getTitle());
         book.setAuthor(updatedBook.getAuthor());
         bookRepository.save(book);
-        return "redirect:/index";
+        return "redirect:/api/books";
     }
 
-    @DeleteMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteBook(@PathVariable Long id) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid book id: " + id));
         bookRepository.delete(book);
-        return "redirect:/index";
+        return "redirect:/api/books";
     }
 }

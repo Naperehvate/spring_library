@@ -15,14 +15,17 @@
         <div class="form-group my-3">
             <label for="isbn" class="form-label">ISBN книгии: </label>
             <input type="text" id="isbn" th:field="*{isbn}" class="form-control" placeholder="Введите ISBN...">
+            <div class="form-text text-danger" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></div>
         </div>
         <div class="form-group my-3">
             <label for="title" class="form-label">Название книги: </label>
             <input type="text" id="title" th:field="*{title}" class="form-control" placeholder="Введите название книги...">
+            <div class="form-text text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
         </div>
         <div class="form-group my-3">
             <label for="author" class="form-label">Автор книги: </label>
             <input type="text" id="author" th:field="*{author}" class="form-control" placeholder="Введите автора книги...">
+            <div class="form-text text-danger" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
         </div>
         <button type="submit" class="btn btn-outline-primary my-2 me-5">Сохранить</button>
         <a th:href="@{/api/books}" class="btn btn-outline-danger">Отмена</a>

@@ -1,8 +1,11 @@
 package org.example.spring_library;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -24,7 +27,10 @@ public class BookController {
     }
 
     @PostMapping
-    public String createBook(Book book) {
+    public String createBook(@Valid Book book, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "create-book";
+        }
         System.out.println(book);
         bookRepository.save(book);
         return "redirect:/api/books";
@@ -38,7 +44,12 @@ public class BookController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateBook(@PathVariable Long id, Book updatedBook) {
+    public String updateBook(@PathVariable Long id, @Valid Book updatedBook, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            updatedBook.setId(id);
+            model.addAttribute("book", updatedBook);
+            return "edit-book";
+        }
         Book book = bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid book id: " + id));
         book.setTitle(updatedBook.getTitle());
         book.setAuthor(updatedBook.getAuthor());

@@ -7,19 +7,18 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-public class Book
-{
+public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Название книги не может быть пустым")
+    @NotBlank(message = "Название книги обязательно")
     private String title;
 
-    @NotBlank(message = "Автор книги не может быть пустым")
+    @NotBlank(message = "Автор книги обязателен")
     private String author;
 
-    @NotBlank(message = "ISBN книги не может быть пустым")
+    @NotBlank(message = "ISBN книги обязателен")
     private String isbn;
 
     public Book(String title, String author, String isbn) {
@@ -29,7 +28,6 @@ public class Book
     }
 
     public Book() {
-
     }
 
     public Long getId() {

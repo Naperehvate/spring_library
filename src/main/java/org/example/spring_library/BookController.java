@@ -8,7 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/api/books")
+@RequestMapping
 public class BookController {
     @Autowired
     private IBookRepository bookRepository;
@@ -31,7 +31,7 @@ public class BookController {
             return "create-book";
         }
         bookRepository.save(book);
-        return "redirect:/api/books";
+        return "redirect:/";
     }
 
     @GetMapping("/edit/{id}")
@@ -59,13 +59,13 @@ public class BookController {
         bookRepository.save(book);
 
         System.out.println("Book updated: " + book); // Отладочное сообщение
-        return "redirect:/api/books";
+        return "redirect:/";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteBook(@PathVariable Long id) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid book id: " + id));
         bookRepository.delete(book);
-        return "redirect:/api/books";
+        return "redirect:/";
     }
 }

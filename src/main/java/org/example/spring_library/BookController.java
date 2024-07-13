@@ -68,4 +68,10 @@ public class BookController {
         bookRepository.delete(book);
         return "redirect:/";
     }
+
+    @GetMapping("/search")
+    public String searchBooks(@RequestParam("searchQuery") String searchQuery, Model model) {
+        model.addAttribute("books", bookRepository.searchBookByTitleContainsIgnoreCase(searchQuery));
+        return "index";
+    }
 }

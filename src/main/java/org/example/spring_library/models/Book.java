@@ -1,4 +1,4 @@
-package org.example.spring_library;
+package org.example.spring_library.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

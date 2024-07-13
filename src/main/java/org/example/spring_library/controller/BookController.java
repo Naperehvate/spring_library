@@ -1,9 +1,11 @@
-package org.example.spring_library;
+package org.example.spring_library.controller;
 
 import jakarta.validation.Valid;
 import org.example.spring_library.models.Book;
 import org.example.spring_library.repositories.IBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping
 public class BookController {
+
+    public BookController(IBookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+
     @Autowired
     private IBookRepository bookRepository;
 
@@ -72,8 +79,14 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public String searchBooks(@RequestParam("searchQuery") String searchQuery, Model model) {
-        model.addAttribute("books", bookRepository.searchBookByTitleContainsIgnoreCase(searchQuery));
-        return "index";
+    public String searchBooks(@RequestParam("searchQuery") String searchQuery,
+                              @RequestParam(value = "page", defaultValue = "0") int page,
+                              @RequestParam(value = "size", defaultValue = "10") int size,
+                              Model model) {
+        Page<Book> books = bookRepository.searchBookByTitleContainsIgnoreCase(searchQuery, PageRequest.of(page, size));
+        model.addAttribute("books", books.getContent());
+        model.addAttribute("totalPages", books.getTotalPages());
+        model.addAttribute("currentPage", page);
+        return "books";
     }
 }
